@@ -11,7 +11,6 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from config import Settings
-from display.html import markdown_to_html
 
 
 router = Router()
