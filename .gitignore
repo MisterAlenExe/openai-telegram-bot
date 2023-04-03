@@ -1,0 +1,16 @@
+# Variables
+/var/
+
+# Byte-compiled
+__pycache__/
+
+# dotenv
+.env
+
+# virtualenv
+venv/
+.venv/
+
+# IDEs
+.idea/
+.vscode/
