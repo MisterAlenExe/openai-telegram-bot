@@ -5,12 +5,14 @@ import openai
 import markdown
 from aiogram import Bot, Dispatcher, Router, flags, md
 from aiogram.types import Message
+from aiogram.enums.parse_mode import ParseMode
 from aiogram.filters import Command
 from aiogram.utils.chat_action import ChatActionMiddleware
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from config import Settings
+from html_to_markdown import markdown_to_html
 
 
 router = Router()
@@ -23,7 +25,9 @@ class Chat(StatesGroup):
 
 @router.message(Command(commands=["start"]))
 async def command_start_handler(message: Message, state: FSMContext):
-    await message.answer("Hi! I can help you answer your questions. Please enter your first question.")
+    await message.answer(
+        text="Hi\! I can help you answer your questions\. Please enter your first question\.\n```\npre-formatted fixed-width code block written in the Python programming language\n```",
+        parse_mode=ParseMode.MARKDOWN_V2)
     await state.set_state(Chat.messages)
     
     
@@ -49,10 +53,11 @@ async def answer_question(message: Message, state: FSMContext):
         temperature=0
     )
     
-    answer = md.unparse(response['choices'][0].message.content)
+    answer = markdown_to_html(response['choices'][0].message.content)
+        
     await message.reply(
         text=answer,
-        parse_mode='MarkdownV2'
+        parse_mode=ParseMode.HTML
     )
         
             
